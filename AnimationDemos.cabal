@@ -10,3 +10,9 @@ executable leaf
   build-depends: base, codeworld-api
   default-language: Haskell2010
   ghc-options: -threaded
+  
+executable solar-system
+  main-is: SolarSystem.hs
+  build-depends: base, codeworld-api
+  default-language: Haskell2010
+  ghc-options: -threaded
