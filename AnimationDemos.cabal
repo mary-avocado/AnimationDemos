@@ -1,0 +1,12 @@
+cabal-version: 2
+name: AnimationDemos
+version: 0
+author: Maria Mukhina
+maintainer: Maria Mukhina <m.avocoder@gmail.com>
+build-type: Simple
+
+executable leaf
+  main-is: Leaf.hs
+  build-depends: base, codeworld-api
+  default-language: Haskell2010
+  ghc-options: -threaded
