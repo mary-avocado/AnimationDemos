@@ -5,15 +5,99 @@ import CodeWorld
 main :: IO ()
 main = animationOf solarSystem
 
-solarSystem :: (Double -> Picture)
+data Planet =
+  MkPlanet
+    { size :: Double,
+      colour :: Color,
+      period :: Double,
+      distance :: Double
+    }
+
+mercury = 
+  MkPlanet 
+    { size = 0.15,
+      colour = mixed [brown, grey],
+      period = 0.24,
+      distance = 2
+    }
+
+venus = 
+  MkPlanet 
+    { size = 0.15 * 3,
+      colour = orange,
+      period = 0.6,
+      distance = 4
+    }
+
+earth = 
+  MkPlanet 
+    { size = 0.15 * 3.2,
+      colour = mixed [blue, green],
+      period = 1,
+      distance = 6.5
+    }
+
+mars = 
+  MkPlanet 
+    { size = 0.15 * 1.6,
+      colour = mixed [brown, red],
+      period = 1.88,
+      distance = 9
+    }
+
+jupiter = 
+  MkPlanet 
+    { size = 0.7,
+      colour = mixed [brown, orange, red, white],
+      period = 11.86,
+      distance = 12
+    }
+
+saturn = 
+  MkPlanet 
+    { size = 0.6,
+      colour = orange,
+      period = 29.46,
+      distance = 16
+    }
+
+uranus = 
+  MkPlanet 
+    { size = 0.3,
+      colour = cyan,
+      period = 84,
+      distance = 18.5
+    }
+
+neptune = 
+  MkPlanet 
+    { size = 0.4,
+      colour = blue,
+      period = 164,
+      distance = 21
+    }
+
+sun = colored yellow (solidCircle 1)
+
+planet :: Planet -> Double -> Picture
+planet = 
+  \p t ->
+    translated
+      (cos (t/period p) * distance p)
+      (sin (t/period p) * distance p)
+      (colored (colour p) (solidCircle (size p)))
+
+solarSystem :: Double -> Picture
 solarSystem = 
   \t ->
-    pictures [colored yellow (solidCircle 1),
-    translated (cos (t/0.24) * 2) (sin (t/0.24) * 2)(colored (mixed [brown, grey]) (solidCircle 0.15)),
-    translated (cos (t/0.6) * 4) (sin (t/0.6) * 4)(colored orange (solidCircle (0.15*3))),
-    translated (cos t * 6.5) (sin t * 6.5)(colored (mixed [blue, green])(solidCircle (0.15*3.2))),
-    translated (cos (t/1.88) * 9) (sin (t/1.88) * 9)(colored (mixed [brown, red]) (solidCircle (0.15*1.6))),
-    translated (cos (t/11.86) * 12) (sin (t/11.86) * 12)(colored (mixed [orange, red, white, brown]) (solidCircle (0.7))),
-    translated (cos (t/29.46) * 16) (sin (t/29.46) * 16)(colored orange (solidCircle (0.6))),
-    translated (cos (t/84) * 18.5) (sin (t/84) * 18.5)(colored blue (solidCircle (0.4))),
-    translated (cos (t/164) * 21) (sin (t/164) * 21)(colored cyan (solidCircle (0.3)))]
+    pictures
+      [ sun,
+        planet mercury t,
+        planet venus t,
+        planet earth t,
+        planet mars t,
+        planet jupiter t,
+        planet saturn t,
+        planet uranus t,
+        planet neptune t
+      ]
