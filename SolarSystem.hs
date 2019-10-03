@@ -10,15 +10,18 @@ data Planet =
     { size :: Double,
       colour :: Color,
       period :: Double,
-      distance :: Double
+      distance :: Double,
+      moons :: [Planet]
     }
 
+  
 mercury = 
   MkPlanet 
     { size = 0.15,
       colour = mixed [brown, grey],
       period = 0.24,
-      distance = 2
+      distance = 2,
+      moons = []
     }
 
 venus = 
@@ -26,7 +29,8 @@ venus =
     { size = 0.15 * 3,
       colour = orange,
       period = 0.6,
-      distance = 4
+      distance = 4,
+      moons = []
     }
 
 earth = 
@@ -34,15 +38,26 @@ earth =
     { size = 0.15 * 3.2,
       colour = mixed [blue, green],
       period = 1,
-      distance = 6.5
+      distance = 6.5,
+      moons = [moon]
     }
+  where
+    moon =
+      MkPlanet 
+        { size = 0.1,
+          colour = grey,
+          period = 0.5,
+          distance = 0.8,
+          moons = []
+        }
 
 mars = 
   MkPlanet 
     { size = 0.15 * 1.6,
       colour = mixed [brown, red],
       period = 1.88,
-      distance = 9
+      distance = 9,
+      moons = []
     }
 
 jupiter = 
@@ -50,7 +65,8 @@ jupiter =
     { size = 0.7,
       colour = mixed [brown, orange, red, white],
       period = 11.86,
-      distance = 12
+      distance = 12,
+      moons = []
     }
 
 saturn = 
@@ -58,7 +74,8 @@ saturn =
     { size = 0.6,
       colour = orange,
       period = 29.46,
-      distance = 16
+      distance = 16,
+      moons = []
     }
 
 uranus = 
@@ -66,7 +83,8 @@ uranus =
     { size = 0.3,
       colour = cyan,
       period = 84,
-      distance = 18.5
+      distance = 18.5,
+      moons = []
     }
 
 neptune = 
@@ -74,7 +92,8 @@ neptune =
     { size = 0.4,
       colour = blue,
       period = 164,
-      distance = 21
+      distance = 21,
+      moons = []
     }
 
 sun = colored yellow (solidCircle 1)
@@ -85,7 +104,13 @@ planet =
     translated
       (cos (t/period p) * distance p)
       (sin (t/period p) * distance p)
-      (colored (colour p) (solidCircle (size p)))
+      (pictures
+        [ colored (colour p) (solidCircle (size p)),
+          planets (moons p) t
+        ])
+
+planets :: [Planet] -> Double -> Picture
+planets =  \ps t -> pictures (map (\p -> planet p t) ps)
 
 solarSystem :: Double -> Picture
 solarSystem = 
